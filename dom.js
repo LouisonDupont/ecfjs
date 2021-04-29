@@ -141,6 +141,35 @@ function apiRecords(artistId){
     modalBody.id = "modalBodyId"
     modalContent.appendChild(modalBody);
 
+    // Appel des cover via un événement.
+
+    buttonInfo.addEventListener("click", (ev) => {
+        apiGetCover(artistId.releases[0].id);
+    });
+
+    // CONDITION D'APPARITION SI YA QUELQUE CHOSE OU NON
+    // REFRESH APRES CHAQUE APPEL
+
+    // Contenu du body de la modal
+
+    let dureeRecord = document.createElement("p");
+    dureeRecord.textContent = "durée : " + (artistId.length * 0.001 / 60) + ' minutes';
+    modalBody.appendChild(dureeRecord);
+    let nomRecord = document.createElement("p");
+    nomRecord.textContent = "title : " + artistId.title;
+    modalBody.appendChild(nomRecord);
+    let nomArtist = document.createElement("p");
+    nomArtist.textContent = "nom artiste : " + artistId["artist-credit"][0].name;
+    modalBody.appendChild(nomArtist);
+    let nomReleases = document.createElement("p");
+
+    //FOR EACH ?
+    nomReleases.textContent = "nom album: " + artistId.releases[0].title;
+    modalBody.appendChild(nomReleases);
+    let tags = document.createElement("p");
+    tags.textContent = "genre : " + artistId.tags[0];
+    modalBody.appendChild(tags);
+
     let modalFooter = document.createElement("div");
     modalFooter.className = "modal-footer";
     modalContent.appendChild(modalFooter);
@@ -154,13 +183,11 @@ function apiRecords(artistId){
 
 
 
-
-
     myRecord.appendChild(buttonInfo);
 
     resultsZone.appendChild(myRecord);
 
-    apiGetCover(artistId.releases[0].id);
+    // apiGetCover(artistId.releases[0].id);
 
 }
 
