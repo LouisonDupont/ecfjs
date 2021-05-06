@@ -4,10 +4,11 @@ const resultsZone = document.querySelector("#results_container");
 const artistName = document.querySelector("#artist");
 const bodyContainer = document.body;
 
-function apiResult(artiste){
+function apiResult(artiste, response){
     if (artiste) {
         if (artiste.score === 100){ // je ressort que l'artiste avec un score de 100
-
+            console.log(artiste);
+            console.log(response);
 
             //     Insertion de l'artiste
             // 1. Partie Nom de l'artiste
@@ -31,11 +32,10 @@ function apiResult(artiste){
             newArtisteType.textContent = artiste.type + " ";
             myArtist.appendChild(newArtisteType);
 
-            // ID
-            let newArtisteId = document.createElement("span");
-            newArtisteId.className = "myArtistId";
-            newArtisteId.textContent = artiste.id + " ";
-            myArtist.appendChild(newArtisteId);
+            // Resultat de recherche
+            let newArtisteResultat = document.createElement("span");
+            newArtisteResultat.textContent = "Résultat de la recherche :" + response.count + " ";
+            myArtist.appendChild(newArtisteResultat);
 
             // Release
             // let newArtisteRelease = document.createElement("span");
@@ -72,8 +72,16 @@ function apiRecords(artistId){
     // Affichage des noms d'artistes
     let artistName = document.createElement("span");
     artistName.className = "artistName";
-    artistName.textContent = "Artiste : " + artistId["artist-credit"][0].name + " ";
+    artistName.textContent = "Artiste : " + recordNomFor() + " ";
     myRecord.appendChild(artistName);
+
+    function recordNomFor () {
+        let recordNom = '';
+        for (var i = 0; i < artistId["artist-credit"].length; i++) {
+            recordNom += artistId["artist-credit"][i].name + " + ";
+        }
+        return recordNom;
+    }
 
     // Affichage des titres
     let newRecordName = document.createElement("span");
@@ -81,17 +89,27 @@ function apiRecords(artistId){
     newRecordName.textContent = "Titre : " + artistId.title + " ";
     myRecord.appendChild(newRecordName);
 
+
     // Affichages des albums
     let newReleaseName = document.createElement("span");
     newReleaseName.className = "myRecordName";
-    newReleaseName.textContent = "Album : " + artistId.releases[0].title + " ";
+    newReleaseName.textContent = "Album : " + recordAlbumFor() + " ";
     myRecord.appendChild(newReleaseName);
 
-    // Affichages id de la Release
-    let newReleaseId = document.createElement("span");
-    newReleaseId.className = "myRecordId";
-    newReleaseId.textContent = "Id de l'album : " + artistId.releases[0].id + " ";
-    myRecord.appendChild(newReleaseId);
+    function recordAlbumFor () {
+        let recordAlbum = '';
+        for (var i = 0; i < artistId["artist-credit"].length; i++) {
+            recordAlbum += artistId["artist-credit"][i].name + " + ";
+        }
+        return recordAlbum;
+    }
+
+    // // Affichages id de la Release
+    // let newReleaseId = document.createElement("span");
+    // newReleaseId.className = "myRecordId";
+    // newReleaseId.textContent = "Id de l'album : " + artistId.releases[0].id + " ";
+    // myRecord.appendChild(newReleaseId);
+
 
     // Bouton PLUS
 
@@ -100,6 +118,7 @@ function apiRecords(artistId){
     buttonInfo.className ="btn btn-primary";
     buttonInfo.setAttribute("data-bs-toggle", "modal");
     buttonInfo.setAttribute("data-bs-target", "#testmodal");
+    buttonInfo.setAttribute("dataId", artistId.releases[0].id);
 
     // Création Modal
 
@@ -141,34 +160,70 @@ function apiRecords(artistId){
     modalBody.id = "modalBodyId"
     modalContent.appendChild(modalBody);
 
+    // EVENEMENTS A L'OUVERTURE DE LA MODAL : AFFICHAGE
+    divModal.addEventListener('shown.bs.modal', function () {
+        console.log("ouverturemodal");
+        modalBody.textContent = null;
+        if(artistId.length){
+            let duree = document.createElement("p");
+            duree.textContent = "duréee : " + (artistId.length * 0.001 / 60) + ' minutes';
+                modalBody.appendChild(duree);
+        }
+        if(artistId.title){
+            let titreNom = document.createElement("p");
+            titreNom.textContent = "title : " + artistId.title;
+            modalBody.appendChild(titreNom);
+        }
+        if(artistId["artist-credit"]){
+            let artistNom = document.createElement("p");
+                
+                artistNom.textContent =  " nom artiste : " + artistNomFor() + " ";
+                modalBody.appendChild(artistNom);
+            function artistNomFor () {
+                let identiteArtist = '';
+                for (var i = 0; i < artistId["artist-credit"].length; i++) {
+                    identiteArtist += artistId["artist-credit"][i].name + " + ";
+                }
+                return identiteArtist;
+            }
+        }
+        if(artistId.releases){
+            let releaseNom = document.createElement("p");
+                
+                releaseNom.textContent =  " nom album : " + releaseNomFor() + " ";
+                modalBody.appendChild(releaseNom);
+            function releaseNomFor () {
+                let identiteRelease = '';
+                for (var i = 0; i < artistId.releases.length; i++) {
+                    identiteRelease += artistId.releases[i].title + " + ";
+                }
+                return identiteRelease;
+            }
+        }
+        if(artistId.tags){
+            let tags = document.createElement("p");
+                
+                tags.textContent =  " genre : " + tagsFor() + " ";
+                modalBody.appendChild(tags);
+            function tagsFor () {
+                let tagsNom = '';
+                for (var i = 0; i < artistId.tags.length; i++) {
+                    tagsNom += artistId.tags[i].name + " + ";
+                }
+                return tagsNom;
+            }
+        }
+    });
+
     // Appel des cover via un événement.
 
     buttonInfo.addEventListener("click", (ev) => {
         apiGetCover(artistId.releases[0].id);
     });
-
+   
     // CONDITION D'APPARITION SI YA QUELQUE CHOSE OU NON
     // REFRESH APRES CHAQUE APPEL
 
-    // Contenu du body de la modal
-
-    let dureeRecord = document.createElement("p");
-    dureeRecord.textContent = "durée : " + (artistId.length * 0.001 / 60) + ' minutes';
-    modalBody.appendChild(dureeRecord);
-    let nomRecord = document.createElement("p");
-    nomRecord.textContent = "title : " + artistId.title;
-    modalBody.appendChild(nomRecord);
-    let nomArtist = document.createElement("p");
-    nomArtist.textContent = "nom artiste : " + artistId["artist-credit"][0].name;
-    modalBody.appendChild(nomArtist);
-    let nomReleases = document.createElement("p");
-
-    //FOR EACH ?
-    nomReleases.textContent = "nom album: " + artistId.releases[0].title;
-    modalBody.appendChild(nomReleases);
-    let tags = document.createElement("p");
-    tags.textContent = "genre : " + artistId.tags[0];
-    modalBody.appendChild(tags);
 
     let modalFooter = document.createElement("div");
     modalFooter.className = "modal-footer";
@@ -201,7 +256,7 @@ function apiCover(idrelease){
     // Affichages image
     let newReleaseCover = document.createElement("img");
     newReleaseCover.className = "myRecordId";
-    newReleaseCover.setAttribute('src', idrelease.image);
+    newReleaseCover.setAttribute('src', idrelease.thumbnails.small);
     myRelease.appendChild(newReleaseCover); 
 
 

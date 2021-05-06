@@ -18,7 +18,7 @@ function apiGetArtist(name) {
                 console.log(response);
                 // Ici j'appelle la fonction apiResult avec pour parametre l'artiste
                 // De la reponse, je vais dans la première clée "artistes" sur laquelle je fais un map (tableau), puis chaque entrée va correspondre a "artiste" puis je fais un traitement dessus : ici de lui passer la fonction apiResult
-                response.artists.map(artiste => apiResult(artiste));
+                response.artists.map(artiste => apiResult(artiste, response));
                 
             } else {
                 // errorMessage.textContent = "Il y a une erreur";

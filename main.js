@@ -1,9 +1,11 @@
 const selectForm = document.querySelector("#search-select");
+
 searchForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
     if (selectForm.value == "artiste") {
         apiGetArtist(artistName.value);
         apiResult(artistName.value);
+        artistName.value = null;
     } else if (selectForm.value == "titre") {
         console.log("input sélectionné : titre");
     } else if (selectForm.value == "album") {

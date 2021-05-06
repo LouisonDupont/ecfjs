@@ -10,7 +10,10 @@ function apiGetCover(idrelease) {
                 console.log(response);
                 response.images.map(idrelease => apiCover(idrelease));
                 
-            } else {
+            }if (request.status=== 404){
+                console.log("Pas d'image pour cette album");
+            }
+            else {
                 console.log("error");
             }
         }
