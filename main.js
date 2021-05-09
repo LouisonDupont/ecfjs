@@ -4,8 +4,6 @@ searchForm.addEventListener("submit", (ev) => {
     ev.preventDefault();
     if (selectForm.value == "artiste") {
         apiGetArtist(artistName.value);
-        apiResult(artistName.value);
-        artistName.value = null;
     } else if (selectForm.value == "titre") {
         console.log("input sélectionné : titre");
     } else if (selectForm.value == "album") {
@@ -14,3 +12,6 @@ searchForm.addEventListener("submit", (ev) => {
         console.log("input sélectionné : all");
     }
 });
+
+
+// Créer un spinner avec un timeout d'une seconde pour afficher le chargement
