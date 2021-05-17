@@ -5,9 +5,9 @@ searchForm.addEventListener("submit", (ev) => {
     if (selectForm.value == "artiste") {
         apiGetArtist(artistName.value);
     } else if (selectForm.value == "titre") {
-        console.log("input sélectionné : titre");
+        apiGetRecords(artistName.value);
     } else if (selectForm.value == "album") {
-        console.log("input sélectionné : album");
+        apiGetRelease(artistName.value);
     } else if (selectForm.value == "all") {
         console.log("input sélectionné : all");
     }
