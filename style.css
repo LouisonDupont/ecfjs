@@ -162,9 +162,46 @@ body header .container .header_right_content ul a li img {
 }
 body main form {
   display: flex;
-  justify-content: space-around;
 }
-body main form .form-select {
-  display: inline-block;
-  width: 150px;
+body main form .form-input label {
+  margin-right: 20px;
+}
+body main form .form-input input {
+  padding-left: 10px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.12);
+}
+body main form .form-filters {
+  border: none;
+  margin: 0 2rem;
+}
+body main form .form-filters select {
+  padding: 4px 20px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.12);
+}
+body main form #inputSearch {
+  padding: 0 20px;
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.12);
+}
+body main #next_content {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+}
+body main #next_content button {
+  padding: 3px 20px;
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.12);
 }
