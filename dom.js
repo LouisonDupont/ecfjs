@@ -317,6 +317,10 @@ function apiRecords(artistId, response){
         modalBody.textContent = null;
     })
 
+    modalBtn.addEventListener('click', function () {
+        modalBody.textContent = null;
+    })
+
 
 
     myRecord.appendChild(buttonInfo);
@@ -334,6 +338,15 @@ function apiModal(duree, titre, artiste, album, tag){
     myModal.className = "myModal";
     resultModal.appendChild(myModal);
 }
+
+function apiModalAlbum(titre, artiste, nbTitres, dateSortie){
+    const resultModal = document.querySelector("#modalBodyId");
+    let myModal = document.createElement("p");
+    myModal.textContent = titre + " + " + artiste + " + " + nbTitres + " + " + dateSortie;
+    myModal.className = "myModal";
+    resultModal.appendChild(myModal);
+}
+
 
 function apiRelease(releaseName, response){
     console.log(releaseName);
@@ -517,26 +530,16 @@ function apiRelease(releaseName, response){
     buttonInfo.addEventListener("click", (ev) => {
         apiGetCover(releaseName.id);
 
+        //titre, artiste, nbTitres, dateSortie
 
-        //  1. LA DUREE 
-
-        if(releaseName.length){
-            duree = "durée : " + (millisToMinutesAndSeconds(releaseName.length)) + " minutes";
-            function millisToMinutesAndSeconds(millis) {
-                let minutes = Math.floor(millis / 60000);
-                let seconds = ((millis % 60000) / 1000).toFixed(0);
-                return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-            }
-        }
-
-        //  2. LE TITRE
+        //  1. LE TITRE
 
         if(releaseName.title){
             titre = "title : " + releaseName.title;
         }
 
 
-         //  3. LE NOM
+         //  2. l'Artiste
 
          if(releaseName["artist-credit"]){
             artiste =  " nom artiste : " + artistNomFor() + " ";
@@ -550,33 +553,19 @@ function apiRelease(releaseName, response){
     }
 
 
-        //  4. LA RELEASE
+        //  3. Le nombres de titres
 
-        if(releaseName.releases){
-            album = " nom album : " + releaseNomFor() + " ";
-            function releaseNomFor () {
-                let releaseName = '';
-                for (var i = 0; i < releaseName.releases.length; i++) {
-                    releaseName += releaseName.releases[i].title + " + ";
-                }
-                return releaseName;
-            }
+        if(releaseName['track-count']){
+            nbTitres = "Nombre de titres : " + releaseName['track-count'];
         }
 
-        //  5. LES TAGS / Genres
+        //  4. Date de sortie
 
-        if(releaseName.tags){
-            tag = " genre : " + tagsFor() + " ";
-            function tagsFor () {
-                let tagsName = '';
-                for (var i = 0; i < releaseName.tags.length; i++) {
-                    tagsName += releaseName.tags[i].name + " + ";
-                }
-                return tagsName;
-            }
+        if(releaseName.date){
+            dateSortie = "Date de sortie : " + releaseName.date;
         }
 
-        apiModal(duree, titre, artiste, album, tag = "");
+        apiModalAlbum(titre, artiste, nbTitres, dateSortie);
 
     });
 
@@ -595,11 +584,277 @@ function apiRelease(releaseName, response){
         modalBody.textContent = null;
     })
 
+    modalBtn.addEventListener('click', function () {
+        modalBody.textContent = null;
+    })
+
 
 
     myRecord.appendChild(buttonInfo);
 
     resultsZone.appendChild(myRecord);
+
+}
+
+function apiAll(releaseName, response){
+    console.log(releaseName);
+
+    
+
+    if (!resultatToggle){
+
+        // 1. Partie Nom de l'album
+
+
+        // Création de l'article (container)
+        let myRelease = document.createElement("article");
+        myRelease.className = "myReleaseArticle";
+
+        // Création du nom de l'artiste et attribution
+        // let newReleaseTitle = document.createElement("span");
+        // newReleaseTitle.className = "myReleaseName";
+        // newReleaseTitle.textContent = releaseName.title + " ";
+        // myRelease.appendChild(newReleaseTitle);
+        
+
+        // Resultat de recherche
+        let newReleaseResultat = document.createElement("span");
+        newReleaseResultat.textContent = 'Résultat de la recherche pour : "' + releaseName.title +  '" ' + response.count + " ";
+        myRelease.appendChild(newReleaseResultat);
+
+        // ici j'intègre l'article à l'espace principal
+        resultsZone.appendChild(myRelease);
+
+        resultatToggle = true;
+
+    }
+
+    if (releaseName) {
+        if (releaseName.score === 100){ 
+
+            
+    // 2. Création de l'album
+
+    // Création de l'article (container)
+    let myRecord = document.createElement("article");
+    myRecord.className = "myRecordArticle";
+
+    // Integration du counter dans l'article
+    let counter = document.createElement("span");
+    counter.textContent = myCounter + ". ";
+    myCounter++;
+    myRecord.appendChild(counter);
+
+
+    // Affichage des titres
+    let newReleaseName = document.createElement("span");
+    newReleaseName.className = "myReleaseName";
+    newReleaseName.textContent = "Album : " + releaseName.title + " ";
+    myRecord.appendChild(newReleaseName);
+
+    // Affichage des noms d'artistes
+    let artistName = document.createElement("span");
+    artistName.className = "artistName";
+    artistName.textContent = "Artiste : " + recordNomFor() + " ";
+    myRecord.appendChild(artistName);
+
+    function recordNomFor () {
+        let recordNom = '';
+        for (var i = 0; i < releaseName["artist-credit"].length; i++) {
+            recordNom += releaseName["artist-credit"][i].name + " + ";
+        }
+        return recordNom;
+    }
+
+    // Affichage des titres
+    let newReleaseNumber = document.createElement("span");
+    newReleaseNumber.className = "myReleaseNumber";
+    newReleaseNumber.textContent = "Nombre de titres : " + releaseName["track-count"] + " ";
+    myRecord.appendChild(newReleaseNumber);
+
+
+
+    // Bouton PLUS
+
+    let buttonInfo = document.createElement('button');
+    buttonInfo.textContent = "Voir plus";
+    buttonInfo.className ="btn btn-primary";
+    buttonInfo.setAttribute("data-bs-toggle", "modal");
+    buttonInfo.setAttribute("data-bs-target", "#testmodal");
+    buttonInfo.setAttribute("dataId", releaseName.id);
+
+    // Création Modal
+
+    let divModal = document.createElement("div");
+    divModal.className = "modal fade";
+    divModal.id = "testmodal";
+    divModal.setAttribute('tabindex', '-1');
+    divModal.setAttribute('aria-labelledby', 'exampleModalLabel');
+    divModal.setAttribute('aria-hidden', 'true');
+    bodyContainer.appendChild(divModal); // ajout de la modal au body
+
+    let modalDialog = document.createElement("div");
+    modalDialog.className = "modal-dialog";
+    divModal.appendChild(modalDialog);
+
+    let modalContent = document.createElement("div");
+    modalContent.className = "modal-content";
+    modalDialog.appendChild(modalContent);
+
+    let modalHeader = document.createElement("div");
+    modalHeader.className = "modal-header";
+    modalContent.appendChild(modalHeader);
+
+    let modalTitle = document.createElement("h5");
+    modalTitle.className = "modal-title";
+    modalTitle.id = "exampleModalLabel";
+    modalTitle.textContent= "Modal title";
+    modalHeader.appendChild(modalTitle);
+
+    let modalBtn = document.createElement("button");
+    modalBtn.className = "btn-close";
+    modalBtn.setAttribute('type', 'button');
+    modalBtn.setAttribute('data-bs-dismiss', 'modal');
+    modalBtn.setAttribute('aria-label', 'Close');
+    modalHeader.appendChild(modalBtn);
+
+    let modalBody = document.createElement("div");
+    modalBody.className = "modal-body";
+    modalBody.id = "modalBodyId"
+    modalContent.appendChild(modalBody);
+
+    // EVENEMENTS A L'OUVERTURE DE LA MODAL : AFFICHAGE
+    divModal.addEventListener('shown.bs.modal', function () {
+        // console.log("ouverturemodal");
+        // modalBody.textContent = null;
+        // if(releaseName.length){
+        //     let duree = document.createElement("p");
+        //     duree.textContent = "duréee : " + (releaseName.length * 0.001 / 60) + ' minutes';
+        //         modalBody.appendChild(duree);
+        // }
+        // if(releaseName.title){
+        //     let titreNom = document.createElement("p");
+        //     titreNom.textContent = "title : " + releaseName.title;
+        //     modalBody.appendChild(titreNom);
+        // }
+        // if(releaseName["artist-credit"]){
+        //     let artistNom = document.createElement("p");
+                
+        //         artistNom.textContent =  " nom artiste : " + artistNomFor() + " ";
+        //         modalBody.appendChild(artistNom);
+        //     function artistNomFor () {
+        //         let identiteArtist = '';
+        //         for (var i = 0; i < releaseName["artist-credit"].length; i++) {
+        //             identiteArtist += releaseName["artist-credit"][i].name + " + ";
+        //         }
+        //         return identiteArtist;
+        //     }
+        // }
+        // if(releaseName.releases){
+        //     let releaseNom = document.createElement("p");
+                
+        //         releaseNom.textContent =  " nom album : " + releaseNomFor() + " ";
+        //         modalBody.appendChild(releaseNom);
+        //     function releaseNomFor () {
+        //         let identiteRelease = '';
+        //         for (var i = 0; i < releaseName.releases.length; i++) {
+        //             identiteRelease += releaseName.releases[i].title + " + ";
+        //         }
+        //         return identiteRelease;
+        //     }
+        // }
+        // if(releaseName.tags){
+        //     let tags = document.createElement("p");
+                
+        //         tags.textContent =  " genre : " + tagsFor() + " ";
+        //         modalBody.appendChild(tags);
+        //     function tagsFor () {
+        //         let tagsNom = '';
+        //         for (var i = 0; i < releaseName.tags.length; i++) {
+        //             tagsNom += releaseName.tags[i].name + " + ";
+        //         }
+        //         return tagsNom;
+        //     }
+        // }
+    });
+
+    // Bouton "Voir plus "-> Appel des cover via un événement.
+
+    buttonInfo.addEventListener("click", (ev) => {
+        apiGetCover(releaseName.id);
+
+        //titre, artiste, nbTitres, dateSortie
+
+        //  1. LE TITRE
+
+        if(releaseName.title){
+            titre = "title : " + releaseName.title;
+        }
+
+
+         //  2. l'Artiste
+
+         if(releaseName["artist-credit"]){
+            artiste =  " nom artiste : " + artistNomFor() + " ";
+        function artistNomFor () {
+            let artisteName = '';
+            for (var i = 0; i < releaseName["artist-credit"].length; i++) {
+                artisteName += releaseName["artist-credit"][i].name + " + ";
+            }
+            return artisteName;
+        }
+    }
+
+
+        //  3. Le nombres de titres
+
+        if(releaseName['track-count']){
+            nbTitres = "Nombre de titres : " + releaseName['track-count'];
+        }
+
+        //  4. Date de sortie
+
+        if(releaseName.date){
+            dateSortie = "Date de sortie : " + releaseName.date;
+        }
+
+        apiModalAlbum(titre, artiste, nbTitres, dateSortie);
+
+    });
+
+    let modalFooter = document.createElement("div");
+    modalFooter.className = "modal-footer";
+    modalContent.appendChild(modalFooter);
+
+    let modalFooterClose = document.createElement("button");
+    modalFooterClose.className = "btn btn-secondary";
+    modalFooterClose.setAttribute('data-bs-dismiss', 'modal');
+    modalFooterClose.setAttribute('type', 'button');
+    modalFooterClose.textContent = 'Close';
+    modalFooter.appendChild(modalFooterClose);
+
+    // Gestion des refresh 
+
+    modalFooterClose.addEventListener('click', function () {
+        modalBody.textContent = null;
+    })
+
+    modalBtn.addEventListener('click', function () {
+        modalBody.textContent = null;
+    })
+
+
+
+    myRecord.appendChild(buttonInfo);
+
+    resultsZone.appendChild(myRecord);
+
+            }
+
+    } else {
+        resultsZone.textContent = "Vous n'avez rien saisi";
+        console.log("Error : 1 ");
+    }
 
 }
 

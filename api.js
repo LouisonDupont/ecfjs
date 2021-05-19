@@ -32,7 +32,26 @@ function apiGetArtist(name) {
 
 function apiGetRecords(artistId) {
     const request = new XMLHttpRequest();
+    //"recording/?query=arid:"
     request.open("GET", API_URL + "recording/?query=arid:" + encodeURIComponent(artistId) + "&limit=100&offset=" + offset + "&fmt=json", true);
+    request.addEventListener("readystatechange", () => {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === 200) {
+                const response = JSON.parse(request.responseText);
+                console.log(response);
+                response.recordings.map(artistId => apiRecords(artistId, response));
+                
+            } else {
+                console.log("error");
+            }
+        }
+    });
+    request.send();
+}
+
+function apiGetOnlyRecords(artistId) {
+    const request = new XMLHttpRequest();
+    request.open("GET", API_URL + "recording/?query=" + encodeURIComponent(artistId) + "&limit=100&offset=" + offset + "&fmt=json", true);
     request.addEventListener("readystatechange", () => {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
@@ -57,6 +76,24 @@ function apiGetRelease(releaseName) {
                 const response = JSON.parse(request.responseText);
                 console.log(response);
                 response.releases.map(releaseName => apiRelease(releaseName, response));
+                
+            } else {
+                console.log("error");
+            }
+        }
+    });
+    request.send();
+}
+
+function apiGetAll(artistId) {
+    const request = new XMLHttpRequest();
+    request.open("GET", API_URL + "recording/?query=" + encodeURIComponent(artistId) + "%20OR%20artist-credit:" + encodeURIComponent(artistId) + "%20OR%20release:" + encodeURIComponent(artistId) + "&limit=100&offset=" + offset + "&fmt=json", true);
+    request.addEventListener("readystatechange", () => {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === 200) {
+                const response = JSON.parse(request.responseText);
+                console.log(response);
+                response.recordings.map(artistId => apiRecords(artistId, response));
                 
             } else {
                 console.log("error");

@@ -1,3 +1,8 @@
+// html {
+//     font-size: .625em; /* fallback IE8+ */
+//     font-size: calc(1em * .625); /* IE9-IE11 math fixing. See http://bit.ly/1g4X0bX */
+// }
+
 /* Box sizing rules */
 *,
 *::before,
@@ -45,8 +50,7 @@ ol[class] {
 
 /* A elements that don't have a class get default styles */
 a:not([class]) {
-  -webkit-text-decoration-skip: ink;
-          text-decoration-skip-ink: auto;
+  text-decoration-skip-ink: auto;
 }
 
 /* Make images easier to work with */
@@ -82,12 +86,12 @@ address {
     scroll-behavior: auto !important;
   }
 }
+
 /* Text meant only for screen readers. */
 .screen-reader-text {
   border: 0;
   clip: rect(1px, 1px, 1px, 1px);
-  -webkit-clip-path: inset(50%);
-          clip-path: inset(50%);
+  clip-path: inset(50%);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -100,8 +104,7 @@ address {
 .screen-reader-text:focus {
   background-color: #eee;
   clip: auto !important;
-  -webkit-clip-path: none;
-          clip-path: none;
+  clip-path: none;
   color: #444;
   display: block;
   font-size: 1em;
@@ -112,59 +115,10 @@ address {
   text-decoration: none;
   top: 5px;
   width: auto;
-  z-index: 100000;
-  /* Above WP toolbar. */
+  z-index: 100000; /* Above WP toolbar. */
 }
 
-.container {
+.container{
   max-width: 120rem;
   margin: 0 auto;
-}
-
-body {
-  font-family: "Karla", sans-serif !important;
-}
-body header {
-  padding: 2rem 0;
-}
-body header .container {
-  display: flex;
-  justify-content: space-between;
-}
-body header .container .header_left_content {
-  display: flex;
-  align-items: center;
-}
-body header .container .header_left_content img {
-  width: 100px;
-}
-body header .container .header_left_content h1 {
-  font-weight: 200;
-  margin-left: 20px;
-}
-body header .container .header_right_content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-body header .container .header_right_content ul {
-  display: flex;
-  align-items: center;
-}
-body header .container .header_right_content ul a {
-  margin: 0 1rem;
-}
-body header .container .header_right_content ul a li {
-  list-style-type: none;
-}
-body header .container .header_right_content ul a li img {
-  width: 20px;
-}
-body main form {
-  display: flex;
-  justify-content: space-around;
-}
-body main form .form-select {
-  display: inline-block;
-  width: 150px;
 }

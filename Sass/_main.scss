@@ -1,0 +1,67 @@
+body{
+    font-family: 'Karla', sans-serif!important;
+
+    // HEADER
+
+    header{
+        padding: 2rem 0;
+        .container{
+            display: flex;
+            justify-content: space-between;
+            .header_left_content{
+                display: flex;
+                align-items: center;
+                img{
+                    width: 100px;
+                }
+
+                h1{
+                    font-weight: 200;
+                    margin-left: 20px;
+                }
+            }
+
+            .header_right_content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                ul{
+                    display: flex;
+                    align-items: center;
+
+                    a{
+                        margin: 0 1rem;
+                        li{
+                            list-style-type: none;
+                            img{
+                                width: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    main{
+        form{
+            display: flex;
+            justify-content: space-around;
+
+            .form-group{
+
+            }
+
+            .form-select{
+                display: inline-block;
+                width: 150px;
+            }
+
+            #inputSearch{
+
+            }
+
+        }
+    }
+}
+

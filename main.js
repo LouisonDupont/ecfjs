@@ -9,13 +9,15 @@ searchForm.addEventListener("submit", (ev) => {
     } else if (selectForm.value == "titre") {
         resultsZone.innerHTML = " ";
         myCounter = 1;
-        apiGetRecords(artistName.value);
+        apiGetOnlyRecords(artistName.value);
     } else if (selectForm.value == "album") {
         resultsZone.innerHTML = " ";
         myCounter = 1;
         apiGetRelease(artistName.value);
     } else if (selectForm.value == "all") {
-        console.log("input sélectionné : all");
+        resultsZone.innerHTML = " ";
+        myCounter = 1;
+        apiGetAll(artistName.value);
     }
 });
 
