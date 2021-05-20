@@ -57,7 +57,7 @@ function apiGetOnlyRecords(artistId) {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
                 console.log(response);
-                response.recordings.map(artistId => apiRecords(artistId, response));
+                response.recordings.map(artistId => apiTitres(artistId, response));
                 
             } else {
                 console.log("error");
