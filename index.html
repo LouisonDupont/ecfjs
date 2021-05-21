@@ -33,7 +33,7 @@
         <form class="bloc-container" id="search_artist_form">
             <div class="form-input">
                 <label for="artist">Artistes, Titres, Albums ...</label>
-                <input type="text" id="artist" />
+                <input type="text"  id="artist" />
             </div>
             <div class="form-filters">
                 <!-- <label for="search-select">Le type de recherche</label> -->
@@ -53,9 +53,13 @@
                 
             </div>
 
+            <div id="spinnerContainer" style="display: none;">
+                <img src="img/spinner.gif" alt="gif du spinner">
+            </div>
+
             <table class="table">
                 <thead>
-                  <tr class="table_titres">
+                  <tr id="table_titres">
                     <th scope="col" class="index"></th>
                     <th scope="col" class="first"></th>
                     <th scope="col" class="second"></th>
@@ -69,7 +73,7 @@
         </div>
         
         <div id="next_content">
-            <button id="btn_more">Voir plus</button>
+            <button id="btn_more" style="display: none;">Voir plus</button>
         </div>
     </main>  
 </body>

@@ -1,15 +1,8 @@
 const API_URL = "https://musicbrainz.org/ws/2/";
 
-// function artist(artist){
-//     apiResult(artist)
-//     // console.log(artist.id);
-//     // console.log(artist.type);
-//     // console.log(artist.name);
-// }
 
 function apiGetArtist(name) {
     const request = new XMLHttpRequest();
-    // request.open("GET", API_URL + "artist?query=" + name + "&fmt=json", true);
     request.open("GET", API_URL + "artist/?query=" + encodeURIComponent(name) + "&limit=100&offset=0&fmt=json", true);
     request.addEventListener("readystatechange", () => {
         if (request.readyState === XMLHttpRequest.DONE) {
@@ -32,7 +25,6 @@ function apiGetArtist(name) {
 
 function apiGetRecords(artistId) {
     const request = new XMLHttpRequest();
-    //"recording/?query=arid:"
     request.open("GET", API_URL + "recording/?query=arid:" + encodeURIComponent(artistId) + "&limit=100&offset=" + offset + "&fmt=json", true);
     request.addEventListener("readystatechange", () => {
         if (request.readyState === XMLHttpRequest.DONE) {
@@ -56,7 +48,7 @@ function apiGetOnlyRecords(artistId) {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
-                console.log(response);
+                // console.log(response);
                 response.recordings.map(artistId => apiTitres(artistId, response));
                 
             } else {
@@ -74,7 +66,7 @@ function apiGetRelease(releaseName) {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
-                console.log(response);
+                // console.log(response);
                 response.releases.map(releaseName => apiRelease(releaseName, response));
                 
             } else {
@@ -92,7 +84,7 @@ function apiGetAll(artistId) {
         if (request.readyState === XMLHttpRequest.DONE) {
             if (request.status === 200) {
                 const response = JSON.parse(request.responseText);
-                console.log(response);
+                // console.log(response);
                 response.recordings.map(artistId => apiRecords(artistId, response));
                 
             } else {
