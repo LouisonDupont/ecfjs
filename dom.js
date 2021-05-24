@@ -28,7 +28,6 @@ function apiResult(artiste, response){
     }
 }
 
-
 function apiRecords(artistId, response){
     // console.log(artistId)
 
@@ -48,6 +47,10 @@ function apiRecords(artistId, response){
 
         resultatToggle = true;
         
+    }
+
+    if(myCounter == 0){
+        console.log("prout2")
     }
 
     // 2. Création de l'Article
@@ -547,6 +550,7 @@ function apiModalAlbum(titre, artiste, nbTitres, dateSortie){
 
 function apiRelease(releaseName, response){
     console.log(releaseName);
+    console.log(response);
 
     if (!resultatToggle){
 
@@ -563,6 +567,10 @@ function apiRelease(releaseName, response){
         resultatToggle = true;
 
     }
+
+    if(response.count == 0){
+        console.log("cest cassé");
+    } 
 
 
     // 2. Création de l'album

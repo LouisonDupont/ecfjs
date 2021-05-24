@@ -59,7 +59,6 @@ searchForm.addEventListener("submit", (ev) => {
             tbSecond.textContent = "Artiste";
             tbThird.textContent = "Album";
 
-            // seeMore.setAttribute('style', 'display : block;')
 
             apiGetOnlyRecords(artistName.value);},
                 3000
@@ -111,8 +110,6 @@ searchForm.addEventListener("submit", (ev) => {
             tbSecond.textContent = "Titre";
             tbThird.textContent = "Album";
 
-            // seeMore.setAttribute('style', 'display : block;')
-
 
             apiGetAll(artistName.value);},
                 3000
@@ -122,9 +119,3 @@ searchForm.addEventListener("submit", (ev) => {
     }
 });
 
-
-
-
-
-
-// Créer un spinner avec un timeout d'une seconde pour afficher le chargement
